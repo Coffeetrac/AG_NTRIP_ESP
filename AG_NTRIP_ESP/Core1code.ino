@@ -29,7 +29,6 @@ for(;;){ // MAIN LOOP FOR THIS CORE
  if (NtripSettings.enableNtrip==1){   
     if (NtripSettings.enableNtrip == 1 && showST == 0){
       getSourcetable(); // print the Sourcetable to serial0 
-      showST = 1;
      }
     Serial.print("connecting to ");
     Serial.println(NtripSettings.host);
@@ -141,15 +140,18 @@ void getSourcetable(){
     }
 
     // Read all the lines of the reply from server and print them to Serial
-    while(client_src.available()) {
+  for(int as=0; as < 2; as++){
+   while(client_src.available()) {
         String Sourcetable = client_src.readStringUntil('\n');
-        Serial.print(Sourcetable);
-        Serial.print('\n');
-      }
+        Serial.println(Sourcetable);
+        delay(1);
+     }
+   delay(100);
     Serial.println("------------------------------------------------------------------------------------------------");
     //Serial.println();
     Serial.println("closing connection");
     Serial.println();
+    showST = 1;
 }
 
 //###########################################################################################
