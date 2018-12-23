@@ -43,7 +43,7 @@ for(;;){ // MAIN LOOP FOR THIS CORE
 
   // This will send the request to the server
   String requestMtp ="";
-  requestMtp =(String("GET  /") + NtripSettings.mountpoint + " HTTP/1.1\r\n" +
+  requestMtp =(String("GET /") + NtripSettings.mountpoint + " HTTP/1.1\r\n" +
                  "User-Agent: " + _userAgent + "\r\n" +
                  "Accept: " + _accept + "\r\n" +
                  "Connection: close\r\n" +
