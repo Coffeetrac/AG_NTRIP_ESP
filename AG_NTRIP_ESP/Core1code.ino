@@ -147,6 +147,7 @@ void getSourcetable(){
         delay(1);
      }
    delay(100);
+  }
     Serial.println("------------------------------------------------------------------------------------------------");
     //Serial.println();
     Serial.println("closing connection");
