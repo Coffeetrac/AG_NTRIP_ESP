@@ -397,7 +397,7 @@ void make_HTML01() {
   set_colgroup(150, 270, 150, 0, 0);
 
   strcat( HTML_String, "<br>");
-  for (int i = 0; i < 4; i++) {
+  for (int i = 0; i < 3; i++) {
     strcat( HTML_String, "<tr>");
     if (i == 0)  strcat( HTML_String, "<td><b>Select Mode</b></td>");
     else strcat( HTML_String, "<td> </td>");
