@@ -30,7 +30,7 @@ String _accept = "*/*";
 int action;
 
 // Radiobutton Select your Position type
-char position_type[4][27] = {"Position Off", "Position Fixed via String", "GGA Position from from GPS", "RMC Position from from GPS"};
+char position_type[4][26] = {"Position Off", "Position Fixed via String", "GGA Position from GPS"};
 
 // Radiobutton Select the time between repetitions.
 char repeatPos[3][8] = {"1 sec.", "5 sec.", "10 sec."};
