@@ -48,7 +48,6 @@ while (Serial1.available())
         if (strcmp(Sent_Buffer, "RMC")==0 || strcmp(Sent_Buffer, "GGA")==0 || strcmp(Sent_Buffer, "VTG")==0){
             if (NtripSettings.send_UDP_AOG  == 1) {
               udp.writeTo(gpsBuffer, i, ipDestination, portDestination );    
-              //Serial2.write(gpsBuffer, i);
             }
             
               
@@ -60,14 +59,6 @@ while (Serial1.available())
                   repeat_ser = millis(); //Reset timer
                 }
               } 
-            else if (NtripSettings.sendGGAsentence == 3){
-               if (strcmp(Sent_Buffer, "RMC") == 0 ){ 
-                 for (byte n = 0; n <= i; n++){
-                    lastSentence[n] = gpsBuffer[n];
-                   }
-                 repeat_ser = millis(); //Reset timer
-                }                      
-             }
           }
             i = 0;
             newSentence = false;
