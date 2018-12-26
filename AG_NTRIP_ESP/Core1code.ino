@@ -42,7 +42,7 @@ for(;;){ // MAIN LOOP FOR THIS CORE
 
   // This will send the request to the server
   String requestMtp ="";
-  requestMtp =(String("GET /") + NtripSettings.mountpoint + " HTTP/1.1\r\n" +
+  requestMtp =(String("GET /") + NtripSettings.mountpoint + " HTTP/1.0\r\n" +
                  "User-Agent: " + _userAgent + "\r\n" +
                  "Accept: " + _accept + "\r\n" +
                  "Connection: close\r\n" +
@@ -122,8 +122,7 @@ void getSourcetable(){
     Serial.println();
     
     // This will send the request to the server
-    client_src.print(String("GET /") + " HTTP/1.1\r\n" +
-                    //"Host: " + NtripSettings.host + "\r\n" + 
+    client_src.print(String("GET /") + " HTTP/1.0\r\n" +
                     "User-Agent: " + _userAgent + "\r\n" +
                     "Accept: " + _accept + "\r\n" +
                     "Connection: close\r\n\r\n");
