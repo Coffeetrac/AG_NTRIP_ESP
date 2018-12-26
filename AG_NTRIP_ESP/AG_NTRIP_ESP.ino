@@ -22,7 +22,6 @@ struct Storage{
   byte sendGGAsentence = 1; // 0 = No Sentence will be sended
                             // 1 = fixed Sentence from GGAsentence below will be sended
                             // 2 = GGA from GPS will be sended
-                            // 3 = RMC from GPS will be sended
   
   byte GGAfreq =10;         // time in seconds between GGA Packets
   char GGAsentence[100] = "$GPGGA,051353.171,4751.637,N,01224.003,E,1,12,1.0,0.0,M,0.0,M,,*6B"; //hc create via www.nmeagen.org
