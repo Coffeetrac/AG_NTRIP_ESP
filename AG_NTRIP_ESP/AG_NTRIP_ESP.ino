@@ -39,8 +39,8 @@ struct Storage{
 #define RX0      3
 #define TX0      1
 
-#define RX1     26 //34  //26
-#define TX1     12 //32  //25
+#define RX1     26 //12 Xchange if SimpleRtk is used!! 
+#define TX1     12 //26 --> RX and TX are crossed at the simplertk Board 
 
 #define RX2     17
 #define TX2     16
