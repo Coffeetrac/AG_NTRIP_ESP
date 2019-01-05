@@ -1,7 +1,7 @@
 # AG_NTRIP_ESP
 
 Easy example NTRIP client written with Arduino IDE for 
-an espressif ESP32. (C) 2018- Wilhelm Eder
+an espressif ESP32. (C) 2019- Wilhelm Eder
 
 Update pending!!
 !! Not available, until final test wit simplertk2b (not delivered yet)!!
