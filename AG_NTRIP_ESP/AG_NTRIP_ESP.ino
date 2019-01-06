@@ -87,7 +87,7 @@ unsigned int portDestination = 9999;  // Port of AOG that listens
 bool AP_running=0, EE_done = 0, restart=0;
 int value = 0; 
 unsigned long repeat_ser;   
-int error = 0;
+//int error = 0;
 unsigned long repeatGGA, lifesign;
 
 // GPS-Bridge
