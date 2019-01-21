@@ -344,7 +344,7 @@ void make_HTML01() {
   set_colgroup(150, 270, 150, 0, 0);
   
   strcat( HTML_String, "<tr>");
-  strcat( HTML_String, "<td><b>Network Name:</b></td>");
+  strcat( HTML_String, "<td><b>Network Name:(IP only)</b></td>");
   strcat( HTML_String, "<td>");
   strcat( HTML_String, "<input type=\"text\" style= \"width:200px\" name=\"CASTER\" maxlength=\"40\" Value =\"");
   strcat( HTML_String, NtripSettings.host);
