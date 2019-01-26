@@ -22,13 +22,18 @@ or read http://www.gnu.org/licenses/gpl.txt
 
 Files in > AG_NTRIP_ESP
 -----------------------------
-AG_NTRIP_ESP.ino:    Ntrip client boot up source code
-Core1code:                  Code for Core1, mainly the NTrip client
-Core2code:                  Code, serving the Setup Webpage and reading serial data from GPS
-Misc.ino:                      Write and read the nonvolatile EEPROM (ESP uses Flash instead)
-Network_AOG.h:       Definitions used by Network_AOG.ino 
-Network_AOG.ino:   The Webpage server
-README.txt:               this Dokumentation
+AG_NTRIP_ESP_BNO_MMA_BT.ino:    Ntrip client boot up source code
+Core1code:                                                  Code for Core1, mainly the NTrip client
+Core2code:                                                  Code, serving the Setup Webpage and reading serial data from GPS
+Misc.ino:                                                      Write and read the nonvolatile EEPROM (ESP uses Flash instead)
+Network_AOG.h:                                       Definitions used by Network_AOG.ino 
+Network_AOG.ino:                                   The Webpage server
+BNO_ESP.h                                                  BNO055 IMU Library
+BNO_ESP.ino                                                    "
+MMA8452_AOG.h                                   MMA 8452 Library
+MMA8452_AOG.ino                                      "
+README.txt:                                             this Documentation
+
 
 Ntrip
 -----
@@ -77,7 +82,8 @@ after restart, the Client logs into your WiFi and you can access it also via
 the Adress:   192.168.1.79 **
 
 ** If your Network use other Network than 192.168.1.xxx you have to modify the 
-Clients IP Adress at Network_AOG.h  before uploading the Sketch to the ESP!
+Clients IP Adress at AG_NTRIP_ESP_BNO_MMA_BT.ino  before uploading 
+the Sketch to the ESP!
 
 The Client uses the Serial Port 0 output (mostly the USB connector to PC) for 
 detailed Debug Information from the Client. Baudrate is 115200.
