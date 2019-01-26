@@ -11,7 +11,7 @@ void WiFi_Start_STA() {
    }
   
   WiFi.begin(NtripSettings.ssid, NtripSettings.password);
-  timeout = millis() + 12000L;
+  timeout = millis() + 30000L;
   while (WiFi.status() != WL_CONNECTED && millis() < timeout) {
     delay(50);
     DBG(".");
@@ -62,7 +62,7 @@ void Send_UDP()
 {
     //Send Packet
     //udp.listen(portMy);
-    udp.writeTo(toSend, sizeof(toSend), ipDestination, portDestination );
+    udp.writeTo(GPStoSend, sizeof(GPStoSend), ipDestination, portDestination );
     //udp.listen(portAOG);
 }
 //---------------------------------------------------------------------
@@ -231,7 +231,7 @@ void process_Request()
     if (Pick_Parameter_Zahl("BAUDRATESET=", HTML_String)==5) NtripSettings.baudOut = 115200;   
     Serial.flush(); // wait for last transmitted data to be sent 
     Serial1.flush(); // wait for last transmitted data to be sent 
-    Serial1.begin (NtripSettings.baudOut,SERIAL_8N1,RX1,TX1); //set new Baudrate
+	Serial1.begin(NtripSettings.baudOut, SERIAL_8N1, RX1, TX1);  //set new Baudrate
     DBG("\nRTCM/NMEA Baudrate: ");
     DBG(NtripSettings.baudOut, 1);
     EEprom_write_all();
@@ -259,11 +259,11 @@ void process_Request()
        NtripSettings.send_UDP_AOG = Pick_Parameter_Zahl("SENDNMEA_TYPE=", HTML_String);
        byte old = NtripSettings.enableNtrip;
        NtripSettings.enableNtrip = Pick_Parameter_Zahl("ENABLENTRIP=", HTML_String);
-       if (NtripSettings.enableNtrip == 1 && old==0 ) restart == 0; // 
+       if (NtripSettings.enableNtrip == 1 && old == 0 ) restart == 0; // 
        EEprom_write_all();    
      } 
 
-   /*if ( action == ACTION_SET_AHRS) {
+   if ( action == ACTION_SET_AHRS) {
 
     NtripSettings.AHRSbyte = 0;
     char tmp_string[20];
@@ -276,7 +276,7 @@ void process_Request()
 
     EEprom_write_all();
 
-   }*/
+   }
 }  
 //---------------------------------------------------------------------
 // HTML Seite 01 aufbauen
@@ -529,7 +529,7 @@ void make_HTML01() {
   }
   strcat( HTML_String, "<tr> <td colspan=\"3\">&nbsp;</td> </tr>");
 
-  for (int i = 0; i < 2; i++) {
+  for (int i = 0; i < 3; i++) {
     strcat( HTML_String, "<tr>");
     if (i == 0)  strcat( HTML_String, "<td><b>Transmission Mode</b></td>");
     else strcat( HTML_String, "<td> </td>");
@@ -549,10 +549,10 @@ void make_HTML01() {
   strcat( HTML_String, "</table>");
   strcat( HTML_String, "</form>");
   strcat( HTML_String, "<br><hr>");
-/* 
+ 
   //-------------------------------------------------------------  
   // Checkboxes AHRS
-  strcat( HTML_String, "<h2>Config AHRS Funktions</h2>");
+  strcat( HTML_String, "<h2>Config AHRS Functions</h2>");
   strcat( HTML_String, "<form>");
   strcat( HTML_String, "<table>");
   set_colgroup(150, 270, 150, 0, 0);
@@ -584,7 +584,7 @@ void make_HTML01() {
   strcat( HTML_String, "</table>");
   strcat( HTML_String, "</form>");
   strcat( HTML_String, "<br><hr>");
-*/
+
   
 //-------------------------------------------------------------  
   strcat( HTML_String, "</font>");

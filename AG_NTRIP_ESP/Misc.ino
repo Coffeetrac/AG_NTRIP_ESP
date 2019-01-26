@@ -3,8 +3,27 @@
 //--------------------------------------------------------------
 #define EEPROM_SIZE 512
 #define EE_ident1 0xED  // Marker Byte 0 + 1
-#define EE_ident2 0xEB
+#define EE_ident2 0xEC
 
+
+//--------------------------------------------------------------
+//  Restore EEprom Data
+//--------------------------------------------------------------
+void restoreEEprom(){
+  byte get_state  = digitalRead(restoreDefault_PIN);
+  if (debugmode) get_state = true;
+  if (get_state ) DBG("State: restoring default values !\n");
+  else DBG("State: read default values from EEPROM\n");
+  
+  if (EEprom_empty_check()==1 || get_state) { //first start?
+    EEprom_write_all();     //write default data
+   }
+  if (EEprom_empty_check()==2) { //data available
+    EEprom_read_all();
+   }
+  //EEprom_show_memory();  //
+  EE_done =1;   
+}
 
 //--------------------------------------------------------------
 byte EEprom_empty_check(){
@@ -56,6 +75,8 @@ byte c2=0, data_;
     c2++;
   }
 }
+
+
 
 
 

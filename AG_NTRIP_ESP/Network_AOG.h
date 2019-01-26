@@ -10,7 +10,7 @@
 // Wifi variables & definitions
 
 #define MAX_PACKAGE_SIZE 2048
-char HTML_String[6000];
+char HTML_String[7000];
 char HTTP_Header[160];
 
 byte my_WiFi_Mode = 0;  // WIFI_STA = 1 = Workstation  WIFI_AP = 2  = Accesspoint

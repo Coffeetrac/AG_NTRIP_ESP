@@ -14,12 +14,96 @@ void Core2code( void * pvParameters ){
  if (my_WiFi_Mode == 0) WiFi_Start_AP(); // if failed start AP
 
  repeat_ser = millis();
+  if ((NtripSettings.AHRSbyte == 1)|(NtripSettings.AHRSbyte == 3)) {   // Initialize the BNO055 if not done
+	 if (imu_initialized == 0) {
+		 initBNO055();
+		 imu_initialized = 1;
+	 }
+	 else {		//  no IMU
+		 imu_initialized = 0;
+		 Head = 0;
+		 Yaw = 0;
+	 }
+  }
+  udp.listen(portMy);
+  for(;;){ //main loop core2
+		WiFi_Traffic();
+		Serial_Traffic();
 
-  for(;;){
-    WiFi_Traffic();
-    Serial_Traffic();
+		//* Loop triggers every 100 msec and sends back gyro heading, and roll
+		currentTime = millis();
+		unsigned int time = currentTime;
+  
+		if (currentTime - lastTime >= LOOP_TIME)
+		{
+			dT = currentTime - lastTime;
+			lastTime = currentTime;
+
+			//BNO
+			if (imu_initialized == 1) {
+				readEulData(EulCount);  // Read the x/y/z adc values   
+				// Calculate the Euler angles values in degrees
+				Head = (float)EulCount[0];
+				if (debugmode) DBG(EulCount[0]);
+				Yaw = Head / 16.;
+			}
+
+			//MMA
+			if ((NtripSettings.AHRSbyte == 2)|(NtripSettings.AHRSbyte == 3)) {
+				// MMA8452 (1) Inclinometer
+				if (accelerometer.acc_initialized == 0) {
+					if (!accelerometer.init()) NtripSettings.AHRSbyte -= 2;
+				} // Try to Initialize MMA8452
+				accelerometer.getRawData(&x_, &y_, &z_);
+				roll = x_; //Conversion uint to int
+				if (roll > 8500)  roll = 8500;
+				if (roll < -8500) roll = -8500;
+				if (debugmode) DBG(roll);
+				roll -= roll_corr;  // 
+				rollK = map(roll, -8500, 8500, -480, 480); //16 counts per degree (good for 0 - +/-30 degrees) 
+			}
+
+			//Kalman filter
+			Pc = P + varProcess;
+			G = Pc / (Pc + varRoll);
+			P = (1 - G) * Pc;
+			Xp = XeRoll;
+			Zp = Xp;
+			XeRoll = G * (rollK - Zp) + Xp;
+
+
+			
+
+			//Build Autosteer Packet: Send to agopenGPS **** you must send 10 Byte or 5 Int
+
+			int temp;
+			//actual steer angle
+			//temp = (100 * steerAngleActual);
+			//IMUtoSend[2] = 5;
+			//IMUtoSend[3] = (byte)(temp);
+
+			//imu heading --- * 16 in degrees
+			temp = Head;
+			IMUtoSend[4] = (byte)(temp >> 8);
+			IMUtoSend[5] = (byte)(temp);
+
+			//Vehicle roll --- * 16 in degrees
+			temp = XeRoll;
+			IMUtoSend[6] = (byte)(temp >> 8);
+			IMUtoSend[7] = (byte)(temp);
+
+			//switch byte
+			//IMUtoSend[8] = switchByte;
+
+			//Build Autosteer Packet completed
+			//Send_UDP();  //transmit to AOG
+			udp.writeTo(IMUtoSend, IMUtoSendLenght, ipDestination, portDestination);
+
+
+		}//end of timed loop getting and sending IMU data
+
     //delay(1);  
-   }
+   }//end main loop core 2
 }
 
 //------------------------------------------------------------------------------------------
@@ -56,7 +140,7 @@ while (Serial1.available())
                break;
               case 2:
                  for (byte n = 0; n < i; n++){  //print gpsBuffer to Bluetooth
-                    //SerialBT.print((char)gpsBuffer[n]);
+                    SerialBT.print((char)gpsBuffer[n]);
                   }
                break;
             }          
@@ -77,6 +161,8 @@ while (Serial1.available())
    if (newSentence && i < 100) 
      {
        gpsBuffer[i++] = c;
+	   if (debugmode) DBG(gpsBuffer[i]);
      }
   }
+
 }  
