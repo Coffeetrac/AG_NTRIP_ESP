@@ -4,7 +4,14 @@
 
 Easy example NTRIP client written with Arduino IDE for 
 a espressif ESP32.   Copyright (C) 2018- by Wilhelm Eder
-    
+
+Now enhanced with Bluetooth NMEA Output.
+Optional IMU (BNO055) module,and optional Inclinometer (MMA8452) module.
+
+The IMU data is transmitted to AOG via Wifi like the NMEA Data. 
+AOG is now enhanced to prefer enabled IMU/Inclino data from Roofcontroller 
+instead of the data from Autosteer module. 
+
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 3 of the License, 
@@ -23,16 +30,16 @@ or read http://www.gnu.org/licenses/gpl.txt
 Files in > AG_NTRIP_ESP
 -----------------------------
 AG_NTRIP_ESP_BNO_MMA_BT.ino:    Ntrip client boot up source code
-Core1code:                                                  Code for Core1, mainly the NTrip client
-Core2code:                                                  Code, serving the Setup Webpage and reading serial data from GPS
-Misc.ino:                                                      Write and read the nonvolatile EEPROM (ESP uses Flash instead)
-Network_AOG.h:                                       Definitions used by Network_AOG.ino 
-Network_AOG.ino:                                   The Webpage server
-BNO_ESP.h                                                  BNO055 IMU Library
-BNO_ESP.ino                                                    "
-MMA8452_AOG.h                                   MMA 8452 Library
-MMA8452_AOG.ino                                      "
-README.txt:                                             this Documentation
+Core1code:                      Code for Core1, mainly the NTrip client
+Core2code:                      Code, serving the Setup Webpage and reading serial data from GPS
+Misc.ino:                       Write and read the nonvolatile EEPROM (ESP uses Flash instead)
+Network_AOG.h:                  Definitions used by Network_AOG.ino 
+Network_AOG.ino:                The Webpage server
+BNO_ESP.h                       BNO055 IMU Library
+BNO_ESP.ino                             "
+MMA8452_AOG.h                   MMA 8452 Library
+MMA8452_AOG.ino                         "
+README.txt:                     this Documentation
 
 
 Ntrip
