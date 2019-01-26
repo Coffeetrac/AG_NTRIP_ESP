@@ -7,7 +7,7 @@ Release V1.25
 
 Enhanced by Matthias H.(MTZ) with Bluetooth, IMU  (BNO055) and Roll Sensor MMA8452
 
-Source: https://github.com/Coffeetrac/AG_NTRIP_ESP_ENH 
+Source: https://github.com/Coffeetrac/AG_NTRIP_ESP
 
 Discussed in detail: https://www.thecombineforum.com/forums/31-technology/279889-rtk-budget-28.html#post3301353
 
