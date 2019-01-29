@@ -148,7 +148,7 @@ void magCalBNO055(float * dest1)
   uint8_t data[6]; // data array to hold mag x, y, z, data
   uint16_t ii = 0, sample_count = 0;
   int32_t mag_bias[3] = {0, 0, 0};
-  int16_t mag_max[3] = {0x8000, 0x8000, 0x8000}, mag_min[3] = {0x7FFF, 0x7FFF, 0x7FFF};
+  int16_t mag_max[3] = {(int16_t)0x8000, (int16_t)0x8000, (int16_t)0x8000}, mag_min[3] = {0x7FFF, 0x7FFF, 0x7FFF};
  
   Serial.println("Mag Calibration: Wave device in a figure eight until done!");
   delay(4000);
