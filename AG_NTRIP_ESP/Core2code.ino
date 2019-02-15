@@ -25,7 +25,9 @@ void Core2code( void * pvParameters ){
 		 Yaw = 0;
 	 }
   }
-  udp.listen(portMy);
+  udpRoof.listen(portMy);
+  UDPReceiveNtrip();
+  
   for(;;){ //main loop core2
 		WiFi_Traffic();
 		Serial_Traffic();
@@ -97,13 +99,28 @@ void Core2code( void * pvParameters ){
 
 			//Build Autosteer Packet completed
 			//Send_UDP();  //transmit to AOG
-			udp.writeTo(IMUtoSend, IMUtoSendLenght, ipDestination, portDestination);
+			udpRoof.writeTo(IMUtoSend, IMUtoSendLenght, ipDestination, portDestination);
 
 
 		}//end of timed loop getting and sending IMU data
 
     //delay(1);  
    }//end main loop core 2
+}
+//------------------------------------------------------------------------------------------
+// Subs --------------------------------------
+void udpNtripRecv()
+{ //callback when received packets
+  udpNtrip.onPacket([](AsyncUDPPacket packet) 
+   {Serial.print("."); 
+    for (int i = 0; i < packet.length(); i++) 
+        {
+          if(NtripSettings.enableNtrip == 2) {
+            //Serial.print(packet.data()[i],HEX); 
+            Serial1.write(packet.data()[i]); 
+          }
+        }
+   });  // end of onPacket call
 }
 
 //------------------------------------------------------------------------------------------
@@ -136,7 +153,7 @@ while (Serial1.available())
         if (strcmp(Sent_Buffer, "RMC")==0 || strcmp(Sent_Buffer, "GGA")==0 || strcmp(Sent_Buffer, "VTG")==0 || strcmp(Sent_Buffer, "ZDA")==0){
             switch (NtripSettings.send_UDP_AOG){
               case 1:
-                 udp.writeTo(gpsBuffer, i, ipDestination, portDestination );    
+                 udpRoof.writeTo(gpsBuffer, i, ipDestination, portDestination );    
                break;
               case 2:
                  for (byte n = 0; n < i; n++){  //print gpsBuffer to Bluetooth

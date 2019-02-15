@@ -56,13 +56,21 @@ void WiFi_Start_AP() {
   DBG(getmyIP, 1);
 }
 //---------------------------------------------------------------------
-
+void UDPReceiveNtrip()
+{
+  if(udpNtrip.listen(portMyNtrip)) 
+    {
+     Serial.print("NTRIP UDP Listening on IP: ");
+     Serial.println(WiFi.localIP());
+     udpNtripRecv();
+    } 
+}
 //---------------------------------------------------------------------
 void Send_UDP()
 {
     //Send Packet
     //udp.listen(portMy);
-    udp.writeTo(GPStoSend, sizeof(GPStoSend), ipDestination, portDestination );
+    udpRoof.writeTo(GPStoSend, sizeof(GPStoSend), ipDestination, portDestination );
     //udp.listen(portAOG);
 }
 //---------------------------------------------------------------------
@@ -505,7 +513,7 @@ void make_HTML01() {
   strcat( HTML_String, "<table>");
   set_colgroup(150, 270, 150, 0, 0);
 
-  for (int i = 0; i < 2; i++) {
+  for (int i = 0; i < 3; i++) {
     strcat( HTML_String, "<tr>");
     if (i == 0)  strcat( HTML_String, "<td><b>NTRIP Client</b></td>");
     else strcat( HTML_String, "<td> </td>");

@@ -43,10 +43,17 @@ for(;;){ // MAIN LOOP FOR THIS CORE
      
    }
  else {
-     DBG("Ntrip Client is switched OFF\n");
+  delay(1);
+  if(NtripSettings.enableNtrip == 2 && aogntriplife <= millis()) {
+    DBG("\nRelaying Ntrip Data from AOG: ");
+    aogntriplife = millis()+5000;
+   }
+  if (NtripSettings.enableNtrip == 0){
+     DBG("ESP Ntrip Client is switched OFF\n");
      if (my_WiFi_Mode != WIFI_STA) DBG("No WiFi connection\n");
      delay(6000);
    }
+  }
 
  if (WiFi.status() != WL_CONNECTED) {
     my_WiFi_Mode = 0;

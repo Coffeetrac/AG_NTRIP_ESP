@@ -41,10 +41,10 @@ char repeatPos[3][8] = {"1 sec.", "5 sec.", "10 sec."};
 char baud_output[6][7] = {"  9600", " 14400", " 19200", " 38400", " 57600", "115200"};
 
 // Radiobutton Select if NMEA are transmitted via UDP.
-char sendNmea[3][10] = {"OFF", "UDP-AOG", "Bluetooth"};
+char sendNmea[3][10] = {"OFF", "AOG-UDP", "Bluetooth"};
 
 // Radiobutton Select if NTRIP Client is enabled. (Off to use only NMEA Transmission to AOG)
-char ntripOn_type[2][4] = {"OFF", "ON"};
+char ntripOn_type[3][9] = {"OFF", "ESP-WiFi", "AOG-UDP"};
 
 char AHRS_tab[2][21] = {"IMU BNO055", "MMA8452 Inclinometer"};
 //---------------------------------------------------------------------

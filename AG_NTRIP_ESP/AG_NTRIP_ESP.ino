@@ -35,7 +35,8 @@ struct Storage{
                             // 1 = Transmission of NMEA Sentences to AOG via Ethernet-UDP
                             // 2 = Bluetooth
 
-  byte enableNtrip   = 0;   // 1 = NTRIP Client enabled
+  byte enableNtrip   = 0;   // 1 = ESP NTRIP Client enabled
+                            // 2 = AOG NTRIP Client enabled (Port=2233)
   
   byte AHRSbyte      = 0;   // 0 = No IMU, No Inclinometer
                             // 1 = BNO055 IMU installed
@@ -93,6 +94,7 @@ IPAddress myDNS(8, 8, 8, 8);      //optional
 
 unsigned int portMy = 5544;       //this is port of this module: Autosteer = 5577 IMU = 5566 GPS = 
 unsigned int portAOG = 8888;      // port to listen for AOG
+unsigned int portMyNtrip = 2233;
 
 //IP address to send UDP data to:
 IPAddress ipDestination(192, 168, 1, 255);
@@ -104,7 +106,7 @@ bool AP_running=0, EE_done = 0, restart=0;
 int value = 0; 
 unsigned long repeat_ser;   
 //int error = 0;
-unsigned long repeatGGA, lifesign;
+unsigned long repeatGGA, lifesign, aogntriplife;
 
 //loop time variables in microseconds
 const unsigned int LOOP_TIME = 100; //10hz 
@@ -144,7 +146,8 @@ MMA8452 accelerometer;
 WiFiServer server(80);
 WiFiClient ntripCl;
 WiFiClient client_page;
-AsyncUDP udp;
+AsyncUDP udpRoof;
+AsyncUDP udpNtrip;
 BluetoothSerial SerialBT;
 
 
