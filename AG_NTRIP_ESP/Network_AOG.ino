@@ -11,7 +11,7 @@ void WiFi_Start_STA() {
    }
   
   WiFi.begin(NtripSettings.ssid, NtripSettings.password);
-  timeout = millis() + 30000L;
+  timeout = millis() + (timeoutRouter * 1000);
   while (WiFi.status() != WL_CONNECTED && millis() < timeout) {
     delay(50);
     DBG(".");
