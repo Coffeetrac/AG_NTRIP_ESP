@@ -7,6 +7,9 @@ TaskHandle_t Core2;
 //##########################################################################################################
 //### Setup Zone ###########################################################################################
 //### Just Default values ##################################################################################
+
+#define timeoutRouter  30         // Time (seconds) to wait for WIFI access, after that own Access Point starts   
+
 struct Storage{
   
   char ssid[24]        = "yourSSID";          // WiFi network Client name
