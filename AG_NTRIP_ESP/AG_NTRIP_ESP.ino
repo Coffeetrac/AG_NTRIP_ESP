@@ -34,7 +34,8 @@ struct Storage{
                             // 1 = Transmission of NMEA Sentences to AOG via Ethernet-UDP
                             // 2 = Bluetooth attention: not possible if line useBluetooth = false
 
-  byte enableNtrip   = 0;   // 1 = ESP NTRIP Client enabled
+  byte enableNtrip   = 0;   // 0 = NTRIP disabled
+                            // 1 = ESP NTRIP Client enabled
                             // 2 = AOG NTRIP Client enabled (Port=2233)
   
   byte AHRSbyte      = 0;   // 0 = No IMU, No Inclinometer
