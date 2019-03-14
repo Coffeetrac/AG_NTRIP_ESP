@@ -48,7 +48,7 @@ struct Storage{
 //##########################################################################################################
 
 boolean debugmode = false;
-boolean useBluetooth = true;  //true: possibility to use bluetooth to transfer data to AOG later on, but needs lots of memory.
+#define useBluetooth  0  // 1= possibility to use bluetooth to transfer data to AOG later on, but needs lots of memory.
 
 // IO pins --------------------------------
 #define RX0      3
