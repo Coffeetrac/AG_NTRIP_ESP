@@ -207,6 +207,7 @@ bool getRtcmData(){
           cnt=0;
         }
         lifesign = millis();
+        Ntrip_data_time = millis();  //LED WiFi Status timer
       }      
       delay(1);   
    }

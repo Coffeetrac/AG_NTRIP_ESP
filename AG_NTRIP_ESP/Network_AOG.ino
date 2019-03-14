@@ -11,11 +11,27 @@ void WiFi_Start_STA() {
    }
   
   WiFi.begin(NtripSettings.ssid, NtripSettings.password);
-  timeout = millis() + (timeoutRouter * 1000);
+  timeout = millis() + (NtripSettings.timeoutRouter * 1000);
   while (WiFi.status() != WL_CONNECTED && millis() < timeout) {
     delay(50);
     DBG(".");
-  }
+    //WIFI LED blink in double time while connecting
+    if (!LED_WIFI_ON) {
+        if (millis() > (LED_WIFI_time + (LED_WIFI_pause >> 2))) 
+          {
+           LED_WIFI_time = millis();
+           LED_WIFI_ON = true;
+           digitalWrite(LED_PIN_WIFI, HIGH);
+          }
+    }
+    if (LED_WIFI_ON) {
+      if (millis() > (LED_WIFI_time + (LED_WIFI_pulse >> 2))) {
+        LED_WIFI_time = millis();
+        LED_WIFI_ON = false;
+        digitalWrite(LED_PIN_WIFI, LOW);
+      }
+    }
+  }    
   
   DBG("", 1); //NL
   if (WiFi.status() == WL_CONNECTED) 
@@ -537,20 +553,29 @@ void make_HTML01() {
   }
   strcat( HTML_String, "<tr> <td colspan=\"3\">&nbsp;</td> </tr>");
 
+  #if (useBluetooth == false)
+    if (NtripSettings.send_UDP_AOG == 2) NtripSettings.send_UDP_AOG =0;
+  #endif
   for (int i = 0; i < 3; i++) {
     strcat( HTML_String, "<tr>");
     if (i == 0)  strcat( HTML_String, "<td><b>Transmission Mode</b></td>");
     else strcat( HTML_String, "<td> </td>");
-    strcat( HTML_String, "<td><input type = \"radio\" name=\"SENDNMEA_TYPE\" id=\"JZ");
+    strcat( HTML_String, "<td><input type = \"radio\" name=\"SENDNMEA_TYPE\" id=\"JZ"); 
     strcati( HTML_String, i);
     strcat( HTML_String, "\" value=\"");
     strcati( HTML_String, i);
     strcat( HTML_String, "\"");
     if (NtripSettings.send_UDP_AOG == i)strcat( HTML_String, " CHECKED");
+    #if (useBluetooth == false)
+      if ( i == 2) strcat( HTML_String, " disabled"); //if BT is Disabled by code
+    #endif
     strcat( HTML_String, "><label for=\"JZ");
     strcati( HTML_String, i);
     strcat( HTML_String, "\">");
     strcat( HTML_String, sendNmea[i]);
+    #if (useBluetooth == false)
+      if ( i == 2) strcat( HTML_String, " (disabled by code)"); //if BT is Disabled by code
+    #endif
     strcat( HTML_String, "</label></td>");
     
   }

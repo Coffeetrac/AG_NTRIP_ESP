@@ -1,23 +1,19 @@
 TaskHandle_t Core1;
 TaskHandle_t Core2;
 // ESP32 Ntrip Client by Coffeetrac
-// Release: V1.25
+// Release: V1.26
 // 01.01.2019 W.Eder
 // Enhanced by Matthias Hammer 12.01.2019
 //##########################################################################################################
 //### Setup Zone ###########################################################################################
 //### Just Default values ##################################################################################
-
-#define timeoutRouter  30         // Time (seconds) to wait for WIFI access, after that own Access Point starts   
-
 struct Storage{
   
   char ssid[24]        = "yourSSID";          // WiFi network Client name
   char password[24]    = "YourPassword";      // WiFi network password
-
+  unsigned long timeoutRouter = 65;           // Time (seconds) to wait for WIFI access, after that own Access Point starts 
 
   // Ntrip Caster Data
-  
   char host[40]        = "195.200.70.200";    // Server IP
   int  port            = 2101;                // Server Port
   char mountpoint[40]  = "FPS_BY_RTCM3_3G";   // Mountpoint
@@ -34,9 +30,9 @@ struct Storage{
   
   long baudOut = 38400;     // Baudrate of RTCM Port
 
-  byte send_UDP_AOG  = 0;   // 0 = Transmission of NMEA Off
+  byte send_UDP_AOG  = 2;   // 0 = Transmission of NMEA Off
                             // 1 = Transmission of NMEA Sentences to AOG via Ethernet-UDP
-                            // 2 = Bluetooth
+                            // 2 = Bluetooth attention: not possible if line useBluetooth = false
 
   byte enableNtrip   = 0;   // 1 = ESP NTRIP Client enabled
                             // 2 = AOG NTRIP Client enabled (Port=2233)
@@ -52,6 +48,7 @@ struct Storage{
 //##########################################################################################################
 
 boolean debugmode = false;
+boolean useBluetooth = true;  //true: possibility to use bluetooth to transfer data to AOG later on, but needs lots of memory.
 
 // IO pins --------------------------------
 #define RX0      3
@@ -65,6 +62,8 @@ boolean debugmode = false;
 
 #define SDA     21  //I2C Pins
 #define SCL     22
+
+#define LED_PIN_WIFI   32   // WiFi Status LED
 
 //########## BNO055 adress 0x28 ADO = 0 set in BNO_ESP.h means ADO -> GND
 //########## MMA8451 adress 0x1D SAO = 0 set in MMA8452_AOG.h means SAO open (pullup!!)
@@ -104,6 +103,14 @@ IPAddress ipDestination(192, 168, 1, 255);
 unsigned int portDestination = 9999;  // Port of AOG that listens
 
 // Variables ------------------------------
+// WiFistatus LED 
+// blink times: searching WIFI: blinking 4x faster; connected: blinking as times set; data available: light on; no data for 2 seconds: blinking
+unsigned int LED_WIFI_time = 0;
+unsigned int LED_WIFI_pulse = 700;   //light on in ms 
+unsigned int LED_WIFI_pause = 700;   //light off in ms
+boolean LED_WIFI_ON = false;
+unsigned long Ntrip_data_time = 0;
+
 // program flow
 bool AP_running=0, EE_done = 0, restart=0;
 int value = 0; 
@@ -151,7 +158,9 @@ WiFiClient ntripCl;
 WiFiClient client_page;
 AsyncUDP udpRoof;
 AsyncUDP udpNtrip;
+#if (useBluetooth)
 BluetoothSerial SerialBT;
+#endif
 
 
 // Setup procedure ------------------------
@@ -167,12 +176,14 @@ void setup() {
   Serial2.begin(115200,SERIAL_8N1,RX2,TX2); 
 
   Serial.begin(115200);
-  if(!SerialBT.begin("BT_GPS_ESP")){
+ #if (useBluetooth)
+     if(!SerialBT.begin("BT_GPS_ESP")){
       DBG("\nAn error occurred initializing Bluetooth\n");
-  }
-  
- 
-  
+     }
+ #endif
+
+ pinMode(LED_PIN_WIFI, OUTPUT);
+   
   //------------------------------------------------------------------------------------------------------------  
   //create a task that will be executed in the Core1code() function, with priority 1 and executed on core 0
   xTaskCreatePinnedToCore(Core1code, "Core1", 10000, NULL, 1, &Core1, 0);

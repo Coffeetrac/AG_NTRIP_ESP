@@ -3,7 +3,7 @@
 //--------------------------------------------------------------
 #define EEPROM_SIZE 512
 #define EE_ident1 0xED  // Marker Byte 0 + 1
-#define EE_ident2 0xEC
+#define EE_ident2 0xED
 
 
 //--------------------------------------------------------------

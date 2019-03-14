@@ -104,7 +104,27 @@ void Core2code( void * pvParameters ){
 
 		}//end of timed loop getting and sending IMU data
 
-    //delay(1);  
+    //no data for more than 2 secs = blink
+    if (millis() > (Ntrip_data_time + 2000)) {
+      if (!LED_WIFI_ON) {
+        if (millis() > (LED_WIFI_time + LED_WIFI_pause)) {
+          LED_WIFI_time = millis();
+          LED_WIFI_ON = true;
+          digitalWrite(LED_PIN_WIFI, HIGH);
+        }
+      }
+      if (LED_WIFI_ON) {
+        if (millis() > (LED_WIFI_time + LED_WIFI_pulse)) {
+          LED_WIFI_time = millis();
+          LED_WIFI_ON = false;
+          digitalWrite(LED_PIN_WIFI, LOW);
+        }
+      }
+    }
+    else
+    {
+      digitalWrite(LED_PIN_WIFI, HIGH);
+    }
    }//end main loop core 2
 }
 //------------------------------------------------------------------------------------------
@@ -156,10 +176,12 @@ while (Serial1.available())
                  udpRoof.writeTo(gpsBuffer, i, ipDestination, portDestination );    
                break;
               case 2:
+              #if (useBluetooth)
                  for (byte n = 0; n < i; n++){  //print gpsBuffer to Bluetooth
                     SerialBT.print((char)gpsBuffer[n]);
                   }
-               break;
+              #endif                
+              break;
             }          
                
             if (NtripSettings.sendGGAsentence == 2 ){
