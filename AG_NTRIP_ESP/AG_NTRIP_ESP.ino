@@ -20,7 +20,7 @@ struct Storage{
   char ntripUser[40]   = "NTRIPUsername";     // Username
   char ntripPassword[40]= "NTRIPPassword";    // Password
 
-  byte sendGGAsentence = 1; // 0 = No Sentence will be sended
+  byte sendGGAsentence = 0; // 0 = No Sentence will be sended
                             // 1 = fixed Sentence from GGAsentence below will be sended
                             // 2 = GGA from GPS will be sended
   
