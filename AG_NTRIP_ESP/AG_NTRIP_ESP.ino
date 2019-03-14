@@ -30,7 +30,7 @@ struct Storage{
   
   long baudOut = 38400;     // Baudrate of RTCM Port
 
-  byte send_UDP_AOG  = 2;   // 0 = Transmission of NMEA Off
+  byte send_UDP_AOG  = 0;   // 0 = Transmission of NMEA Off
                             // 1 = Transmission of NMEA Sentences to AOG via Ethernet-UDP
                             // 2 = Bluetooth attention: not possible if line useBluetooth = false
 
@@ -48,7 +48,7 @@ struct Storage{
 //##########################################################################################################
 
 boolean debugmode = false;
-#define useBluetooth  0  // 1= possibility to use bluetooth to transfer data to AOG later on, but needs lots of memory.
+#define useBluetooth  1  // 1= possibility to use bluetooth to transfer data to AOG later on, but needs lots of memory.
 
 // IO pins --------------------------------
 #define RX0      3
